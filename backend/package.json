@@ -1,0 +1,15 @@
+{
+  "name": "razorpay",
+  "version": "1.0.0",
+  "description": "gateway test",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.18.2",
+    "razorpay": "^2.9.2"
+  }
+}
