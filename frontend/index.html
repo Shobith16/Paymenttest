@@ -1,77 +1,69 @@
-<!DOCTYPE html> 
-<html lang="en"> 
-  
-<head> 
-    <meta charset="utf-8" /> 
-    <meta content= 
-        "This is a demo of Web integration  
-        of Razorpay in NodeJS"  
-        author="Mr. Twinkle Sharma" /> 
-    <title>Razorpay Web-Integration</title> 
-</head> 
-  
-<body> 
-    <hr/> 
-    <h2>Advanced Data Structures & Algorithms Course</h2> 
-    <h3>Description</h3> 
-  
-    <ul> 
-        <li>Best Course for SDE placements</li> 
-        <li> 
-            Available in 4 major Languages JAVA,  
-            C/C++, Python, Javascript 
-        </li> 
-        <li>Lifetime Access</li> 
-    </ul> 
-  
-    <span> Cost:- 499 Rupees  
-        <button id="pay-button" > 
-            Pay Now & Get Access 
-        </button>  
-    </span> 
-    <hr/> 
-  
-    <!-- Processing Payment Checkout -->
-    <div id="payment-form"></div>
-</body> 
-<!--Inside index.html -->
-<script src="https://checkout.razorpay.com/v1/checkout.js"></script> 
-<script> 
-   var options = { 
-       "key": "rzp_test_jML2HcCxuJ0XZV",  
-       "amount": "49900",  
-       "currency": "INR", 
-       "name": "Dummy Academy", 
-       "description": "Pay & Checkout this Course, Upgrade your DSA Skill", 
-       "image": "https://media.geeksforgeeks.org/wp-content/uploads/20210806114908/dummy-200x200.png", 
-       "handler": function (response){ 
-           console.log(response, "Payment Succeeded"); 
-           alert("Payment succeeded"); 
-       }, 
-       "prefill": { 
-         "contact":"9876543210",  
-         "name": "Twinkle Sharma",   
-         "email": "smtwinkle@gmail.com"
-       }, 
-      "notes" : { 
-         "description":"Best Course for SDE placements", 
-         "language":"Available in 4 major Languages JAVA,C/C++, Python, Javascript", 
-         "access":"This course have Lifetime Access" 
-       },  
-       "theme": { 
-           "color": "#2300a3" 
-       } 
-   }; 
-   var razorpayObject = new Razorpay(options); 
-   console.log(razorpayObject); 
-   razorpayObject.on('payment.failed', function (response){ 
-         console.log(response, "Payment Failed"); 
-         alert("Payment failed"); 
-   }); 
-     
-   document.getElementById('pay-button').onclick = function(e){ 
-       razorpayObject.open(); 
-       e.preventDefault(); 
-   } 
-</script> 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Razorpay Integration</title>
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script> </head>
+<body>
+    <h1>Make a Payment with Razorpay</h1>
+    <button id="pay-button">Pay Now</button>
+
+    <script>
+        const options = {
+            "key": "rzp_test_jML2HcCxuJ0XZV", // Replace with your actual key_id
+            "amount": 1000, // Amount in paise (1000 paise = ₹10)
+            "name": "My Store",
+            "description": "Test Payment",
+            "prefill": {
+                "name": "John Doe",
+                "email": "johndoe@example.com",
+                "contact": "9876543210"
+            },
+            "notes": {
+                "order_id": "4343" // Replace with your actual order ID
+            },
+            "theme": {
+                "color": "#33B2FF" // Optional: Customize button color
+            },
+            "handler": function (response) {
+                // Handler function for successful payment
+                console.log(response);
+                // Send payment details to your server for verification and fulfillment
+                // using POST request with order_id, razorpay_payment_id, and razorpay_signature
+                fetch('/verify-payment', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        razorpay_payment_id: response.razorpay_payment_id,
+                        razorpay_order_id: response.razorpay_order_id,
+                        razorpay_signature: response.razorpay_signature
+                    })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.status === 'success') {
+                        // Handle successful payment on the client-side (e.g., show confirmation message)
+                        alert('Payment successful!');
+                    } else {
+                        // Handle payment failure on the client-side (e.g., show error message)
+                        alert('Payment failed! Please try again or contact support.');
+                    }
+                })
+                .catch(error => {
+                    console.error(error);
+                    // Handle errors gracefully
+                    alert('An error occurred. Please try again or contact support.');
+                });
+            }
+        };
+
+        const rzp = new Razorpay(options);
+        document.getElementById('pay-button').addEventListener('click', function () {
+            rzp.open();
+        });
+    </script>
+</body>
 </html>

@@ -1,83 +1,49 @@
-// Inside app.js  
-const express = require('express'); 
-const Razorpay = require('razorpay');  
-  
-// This razorpayInstance will be used to 
-// access any resource from razorpay 
-const razorpayInstance = new Razorpay({ 
-  
-    // Replace with your key_id 
-    key_id: rzp_test_jML2HcCxuJ0XZV, 
-  
-    // Replace with your key_secret 
-    key_secret: X6wlucKdQ1Zqq5Va6ym3Ycnx
-}); 
-  
-const app = express(); 
-const PORT = process.env.PORT || '5000'; 
-  
-// Here we will create two routes one  
-// /createOrder and other /verifyOrder  
-// Replace these comments with the code  
-// provided later in step 2 & 8 for routes 
-// app.use(express.json());
+const Razorpay = require('razorpay');
 
-// app.post('/createOrder', (req, res) => {
-//     // Handle the order data received from the client
-//     const orderData = req.body;
-//     // Process the order data as needed
-    
-//     // Respond to the client with a success message or other relevant response
-//     res.send('Order received successfully');
-//   });
-  
-//Inside app.js 
-app.post('/createOrder', (req, res)=>{  
-  
-    // STEP 1: 
-    const {amount,currency,receipt, notes}  = req.body;       
-          
-    // STEP 2:     
-    razorpayInstance.orders.create({amount, currency, receipt, notes},  
-        (err, order)=>{ 
-          
-          //STEP 3 & 4:  
-          if(!err) 
-            res.json(order) 
-          else
-            res.send(err); 
-        } 
-    ) 
-}); 
-
-app.post('/verifyOrder',  (req, res)=>{  
-      
-    // STEP 7: Receive Payment Data 
-    const {order_id, payment_id} = req.body;      
-    const razorpay_signature =  req.headers['x-razorpay-signature']; 
-  
-    // Pass yours key_secret here 
-    const key_secret = YAEUthsup8SijNs3iveeVlL1;      
-  
-    // STEP 8: Verification & Send Response to User 
-      
-    // Creating hmac object  
-    let hmac = crypto.createHmac('sha256', key_secret);  
-  
-    // Passing the data to be hashed 
-    hmac.update(order_id + "|" + payment_id); 
-      
-    // Creating the hmac in the required format 
-    const generated_signature = hmac.digest('hex'); 
-      
-      
-    if(razorpay_signature===generated_signature){ 
-        res.json({success:true, message:"Payment has been verified"}) 
-    } 
-    else
-    res.json({success:false, message:"Payment verification failed"}) 
+const instance = new Razorpay({
+    key_id: 'rzp_test_jML2HcCxuJ0XZV', // Replace with your actual key_id
+    key_secret: 'X6wlucKdQ1Zqq5Va6ym3Ycnx' // Replace with your actual key_secret
 });
 
-app.listen(PORT, ()=>{ 
-    console.log("Server is Listening on Port ", PORT); 
-}); 
+app.post('/create-order', async (req, res) => {
+    const { amount, currency, receipt, ...options } = req.body; // Extract order details from request
+    try {
+        const order = await instance.orders.create(options);
+        res.json({
+            id: order.id, // Send order ID as response
+            key: order.key,
+            amount: order.amount,
+            currency: order.currency,
+            ...order
+        });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: error.message });
+    }
+});
+
+app.post('/verify-payment', async (req, res) => {
+    const { razorpay_payment_id, razorpay_order_id, razorpay_signature } = req.body;
+
+    const expectedSignature = crypto.createHmac('sha256', KEY_SECRET)
+        .update(`<span class="math-inline">\{ORDER\_ID\}\|</span>{RAZORPAY_PAYMENT_ID}`)
+        .digest('hex');
+
+    if (expectedSignature === razorpay_signature) {
+        try {
+            const payment = await instance.payments.capture(razorpay_payment_id);
+            // Handle successful payment (e.g., update order status, send confirmation email)
+            res.json({ status: 'success', payment });
+        } catch (error) {
+            console.error(error);
+            res.status(500).json({ error: error.message });
+        }
+    } else {
+        console.error('Invalid signature');
+        res.status(400).json({ error: 'Invalid signature' });
+    }
+});
+
+const server = app.listen(3000, () => {
+    console.log('Server listening on port 3000');
+});
