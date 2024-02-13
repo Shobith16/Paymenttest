@@ -7,10 +7,10 @@ const Razorpay = require('razorpay');
 const razorpayInstance = new Razorpay({ 
   
     // Replace with your key_id 
-    key_id: rzp_test_fiIwmRET6CApc2, 
+    key_id: rzp_test_jML2HcCxuJ0XZV, 
   
     // Replace with your key_secret 
-    key_secret: YAEUthsup8SijNs3iveeVlL1 
+    key_secret: X6wlucKdQ1Zqq5Va6ym3Ycnx
 }); 
   
 const app = express(); 
