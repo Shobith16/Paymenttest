@@ -6,8 +6,8 @@ const app = express();
 const PORT = process.env.PORT || 5000;
 
 const razorpayInstance = new Razorpay({
-  key_id: 'rzp_test_jML2HcCxuJ0XZV',
-  key_secret: 'X6wlucKdQ1Zqq5Va6ym3Ycnx'
+  key_id: 'rzp_test_j6KWJ17yYlWYl7',
+  key_secret: 'HdmPvLO3lpyDjldCI1qfmuLI'
 });
 
 // Route to create an order
@@ -27,7 +27,7 @@ app.post('/createOrder', (req, res) => {
 app.post('/verifyOrder', (req, res) => {
   const { order_id, payment_id } = req.body;
   const razorpay_signature = req.headers['x-razorpay-signature'];
-  const key_secret = 'X6wlucKdQ1Zqq5Va6ym3Ycnx'; // replace with your key_secret
+  const key_secret = 'HdmPvLO3lpyDjldCI1qfmuLI'; // replace with your key_secret
 
   const generated_signature = crypto.createHmac('sha256', key_secret)
     .update(order_id + "|" + payment_id)

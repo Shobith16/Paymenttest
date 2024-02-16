@@ -6,25 +6,25 @@
     <meta content= 
         "This is a demo of Web integration  
         of Razorpay in NodeJS"  
-        author="Mr. Twinkle Sharma" /> 
+        author="Jeevan J" /> 
     <title>Razorpay Web-Integration</title> 
+    <link rel="stylesheet" type="text/css" href="styles.css">
 </head> 
   
 <body> 
     <hr/> 
-    <h2>Advanced Data Structures & Algorithms Course</h2> 
+    <h2>FoodCourt MITE</h2> 
     <h3>Description</h3> 
   
     <ul> 
-        <li>Best Course for SDE placements</li> 
+        <li>Breakfast,Meals,fastfood,Bevarages,Chats,Icecream</li> 
         <li> 
-            Available in 4 major Languages JAVA,  
-            C/C++, Python, Javascript 
+          Available in MITE
         </li> 
-        <li>Lifetime Access</li> 
+        <li>limited quantity!</li> 
     </ul> 
   
-    <span> Cost:- 499 Rupees  
+    <span> Cost:- 99 Rupees  
         <button id="pay-button" > 
             Pay Now & Get Access 
         </button>  
@@ -38,11 +38,11 @@
 <script src="https://checkout.razorpay.com/v1/checkout.js"></script> 
 <script>
     var options = {
-      "key": "rzp_test_jML2HcCxuJ0XZV", // Replace with your actual test key
-      "amount": "49900",
+      "key": "rzp_test_j6KWJ17yYlWYl7", // Replace with your actual test key
+      "amount": "9900",
       "currency": "INR",
-      "name": "Dummy Academy",
-      "description": "Pay & Checkout this Course, Upgrade your DSA Skill",
+      "name": "FoodCourt MITE",
+      "description": "Pay & Checkout this Food",
       "image": "https://media.geeksforgeeks.org/wp-content/uploads/20210806114908/dummy-200x200.png",
       "handler": function (response) {
         console.log(response, "Payment Succeeded");
@@ -50,13 +50,13 @@
       },
       "prefill": {
         "contact": "9876543210",
-        "name": "Twinkle Sharma",
-        "email": "smtwinkle@gmail.com"
+        "name": "Shobith R Acharya",
+        "email": "shobith@gmail.com"
       },
       "notes": {
-        "description": "Best Course for SDE placements",
-        "language": "Available in 4 major Languages JAVA,C/C++, Python, Javascript",
-        "access": "This course have Lifetime Access"
+        "description": "Breakfast,MEals,fastfood,Bevarages,Chats,Icecream",
+        "language": "Available in MITE",
+        "access": "limited quantity!"
       },
       "theme": {
         "color": "#2300a3"
