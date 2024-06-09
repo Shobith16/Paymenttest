@@ -64,25 +64,8 @@ This project demonstrates integrating the Razorpay payment gateway using HTML, C
 - **views/**: EJS templates
 - **app.js**: Main application file
 
-### Screenshots
-
-![Payment Form](screenshots/payment-form.png)
-![Payment Success](screenshots/payment-success.png)
-![Payment Failure](screenshots/payment-failure.png)
 
 ### Contributing
 
 Contributions are welcome! Fork the repository, create a feature branch, make your changes, and open a pull request.
 
-### License
-
-This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
-
-### Contact
-
-- Email: [your-email@example.com](mailto:your-email@example.com)
-- LinkedIn: [Your LinkedIn Profile](https://linkedin.com/in/your-profile)
-- Twitter: [@your-twitter-handle](https://twitter.com/your-twitter-handle)
-```
-
-This version is shorter but still covers the essential information about your project, including setup instructions, features, and contact details.
